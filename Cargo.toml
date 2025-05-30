@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+rustyline = "16.0.0"
 
 [[bin]]
 name = "minishell"
