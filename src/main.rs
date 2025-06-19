@@ -78,7 +78,10 @@ fn main() -> Result<(), Box<dyn Error>> {
 
                             prev_stdout = None;
                         }
-                        "exit" => return Ok(()),
+                        "exit" => {
+                            rl.save_history(history_path)?;
+                            return Ok(());
+                        }
                         command => {
                             let stdin = match prev_stdout.take() {
                                 Some(output) => Stdio::from(output),
@@ -118,7 +121,6 @@ fn main() -> Result<(), Box<dyn Error>> {
             Err(ReadlineError::Interrupted) | Err(ReadlineError::Eof) => {
                 // Handle Ctrl-C or Ctrl-D gracefully
                 println!("\nExiting minishell...");
-                rl.save_history(history_path)?;
                 break;
             }
             Err(e) => {
@@ -127,5 +129,6 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
 
+    rl.save_history(history_path)?;
     Ok(())
 }
